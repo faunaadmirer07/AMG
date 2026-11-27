@@ -1,0 +1,16 @@
+workspace/tmp_samples/*
+!workspace/tmp_samples/.gitkeep
+workspace/*.log
+workspace/batch_test_results.json
+ida_extractor/gdl/*
+!ida_extractor/gdl/.gitkeep
+ida_extractor/*.log
+__pycache__/
+*.pyc
+*.pyc.*
+*.i64
+*.id0
+*.id1
+*.id2
+*.nam
+*.til

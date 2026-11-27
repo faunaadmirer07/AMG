@@ -1,0 +1,84 @@
+baselines:
+  hillclimb:
+    granularity: bb
+  mcts:
+    attack_strategy: new_section
+    attempt_beta: 1
+    context_free_semnops: false
+    if_size_align: true
+    max_num_modified_blocks: 100
+    mcts_budget: 40
+    mcts_default_policy_search_depth: 1
+    mcts_levels: 6
+    mcts_pause_time: 300
+    mcts_scalar: 0
+    n_alignment: 0
+    saved_sample_path: ./logs_malgraph/mcts_bypassed
+    with_conf: true
+  random:
+    modify_probability: 0.5
+    shuffle_bbs: true
+env:
+  bypass_bonus: 5.0
+  efficiency_bonus_weight: 1.0
+  env_type: default
+  max_modifications: 40
+  max_random_number: 100
+  partial_bb_modify: false
+  reward_scale: 10.0
+  selected_semnop_num: 3
+  size_increase: 0.05
+  threshold: 0.5
+  zero_delta_penalty: -0.1
+logging:
+  episode_log: true
+  step_log: true
+  tensorboard: false
+paths:
+  benign_dir: ./data/benign/sampled_benign
+  call_site_cache: ./data/cache/bb_data/malware2
+  checkpoint_dir: ./logs_malgraph/checkpoints
+  ida_binary: __SET_YOUR_IDA_PATH_HERE__
+  ida_script: ./core/step1/get_call_ida_bb_grouped.py
+  json_cache_dir: ./data/cache/malgraph_pe_score
+  json_cache_extra: null
+  log_dir: ./log_malgraph_RQ1_final_results/pdqn_rerun
+  malware_dir: ./data/malware/sampled_malware2
+  output_dir: ./outputs_malgraph
+  test_hashes: ./configs/malgraph/pdqn_failed_rerun_hashes.txt
+  train_hashes: ./configs/malgraph/scored_hashes_malgraph_tuned_v3_t0.5_train.txt
+  val_hashes: ./configs/malgraph/scored_hashes_malgraph_tuned_v3_t0.5_val.txt
+pointer_dqn:
+  batch_size: 32
+  bb_dim: 37
+  bypass_buffer_capacity: 2000
+  bypass_reward_threshold: 3.0
+  bypass_sample_frac: 0.35
+  ctx_dim: 9
+  epsilon_decay_steps: 10000
+  epsilon_end: 0.1
+  epsilon_start: 1.0
+  gamma: 0.99
+  hidden_dim: 256
+  learning_rate: 0.0001
+  max_bb_train: 2000
+  max_steps: 160
+  positive_buffer_capacity: 5000
+  positive_sample_frac: 0.5
+  rollback_buffer_capacity: 3000
+  rollback_sample_frac: 0.15
+  target_update_freq: 500
+  updates_per_step: 2
+  warmup_steps: 500
+scorer:
+  device: cpu
+  ida_path: __SET_YOUR_IDA_PATH_HERE__
+  tmp_dir: ./.tmp/malgraph
+  type: malgraph
+training:
+  checkpoint_frequency: 500
+  device: cpu
+  eval_frequency: 100
+  max_episodes: 10000
+  seed: 1337
+  val_frac: 0.1

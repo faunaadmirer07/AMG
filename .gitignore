@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Model weights / checkpoints
+*.pth
+*.pkl
+*.h5
+*.onnx
+*.bin
+saved_model/malgraph/workspace/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Claude Code
+.claude/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
+tmp/
+logs*
+malware_samples_10/
+data/*
+!data/README.md
+scripts/*
+output*
+todo
+tests*
+*.pdf
+paper/paper_structure_mcts_blindspot.md
+paper/NSF*
+paper/story*

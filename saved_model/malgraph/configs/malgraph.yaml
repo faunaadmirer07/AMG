@@ -1,0 +1,33 @@
+# Portable MalGraph configuration.
+# Set ida.path to your IDA Pro executable before extracting graphs from PE files.
+
+ida:
+  path: "__SET_YOUR_IDA_PATH_HERE__"
+  script: "ida_extractor/graph_handle_acfg.py"
+
+Acfg:
+  get_half_data: false
+
+workspace:
+  tmp_sample_root: "workspace/tmp_samples"
+  gdl_dir: "ida_extractor/gdl"
+
+model:
+  path: "models/malgraph_tuned_v3.pt"
+  vocab_path: "models/external_function_vocab.jsonl"
+  max_vocab_size: 10000
+  gnn_type: "GraphSAGE"
+  pool_type: "global_max_pool"
+  acfg_init_dims: 11
+  cfg_filters: "200-200"
+  fcg_filters: "200-200"
+  skip_att_heads: 0
+  dropout_rate: 0.35
+  ablation_models: "Full"
+  threshold: 0.5
+
+dataset:
+  seed: 19920208
+  balance_classes: true
+  batch_size: 8
+  pred_threshold: 0.5

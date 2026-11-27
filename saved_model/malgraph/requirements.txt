@@ -1,0 +1,9 @@
+torch
+torch-geometric
+pyyaml
+tqdm
+numpy
+
+# Install PyG binary deps for your torch/CUDA build, for example:
+# pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv \
+#   -f https://data.pyg.org/whl/torch-2.6.0+cu124.html

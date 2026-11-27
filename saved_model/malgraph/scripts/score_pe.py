@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Score a PE/binary file with the portable MalGraph model (IDA extract + inference)."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from malgraph.scorer import MalgraphScorer
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Score a PE/binary file with MalGraph")
+    parser.add_argument("-f", "--file", required=True, type=Path, help="Input PE/binary file")
+    parser.add_argument("--device", default="cuda", choices=["cuda", "cpu"])
+    parser.add_argument("--threshold", type=float, default=None)
+    args = parser.parse_args()
+
+    scorer = MalgraphScorer(device=args.device, threshold=args.threshold)
+    score = scorer.score_pe_file(args.file)
+    if score is None:
+        raise RuntimeError("Scoring failed: graph could not be built from extracted JSON")
+
+    result = {
+        "file": str(args.file.resolve()),
+        "malware_probability": score,
+        "prediction": scorer.classify(score),
+        "threshold": scorer.threshold,
+    }
+    print(json.dumps(result, indent=2))
+
+
+if __name__ == "__main__":
+    main()

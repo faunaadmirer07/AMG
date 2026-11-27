@@ -1,0 +1,89 @@
+scorer:
+  type:   malconv
+  model:  saved_model/malconv/best_malconv_no_header.pt
+  device: cpu
+
+paths:
+  malware_dir:     ./malware_samples_10
+  benign_dir:      ./malware_samples_10
+  train_hashes:    ./configs/malconv/scored_hashes_best_malconv_no_header_t0.5_train.txt
+  val_hashes:      ./configs/malconv/scored_hashes_best_malconv_no_header_t0.5_val.txt
+  test_hashes:     ./configs/malconv/demo_10_hashes.txt
+  log_dir:         ./logs_demo_10
+  output_dir:      ./outputs_malconv
+  checkpoint_dir:  ./logs_demo_10/checkpoints
+  ida_binary:      __SET_YOUR_IDA_PATH_HERE__
+  ida_script:      ./core/step1/get_call_ida_bb_grouped.py
+  call_site_cache: ./sample_cache_10
+
+env:
+  threshold:               0.5
+  size_increase:           0.05
+  max_modifications:       40
+  reward_scale:            10.0
+  bypass_bonus:            5.0
+  zero_delta_penalty:      -0.1
+  efficiency_bonus_weight: 1.0
+  partial_bb_modify:       false
+  selected_semnop_num:     3
+  max_random_number:       100
+
+pointer_dqn:
+  max_bb_train:            2000
+  bb_dim:           37
+  ctx_dim:          9
+  hidden_dim:       256
+  learning_rate:    0.0001
+  batch_size:       32
+  gamma:            0.99
+  epsilon_start:    1.0
+  epsilon_end:      0.10
+  epsilon_decay_steps: 10000
+  target_update_freq:  500
+  warmup_steps:        500
+  updates_per_step:    2
+  max_steps:           160
+  bypass_buffer_capacity:   1000
+  positive_buffer_capacity: 6000
+  rollback_buffer_capacity: 3000
+  bypass_reward_threshold: 3.0
+  bypass_sample_frac:      0.35
+  positive_sample_frac:    0.50
+  rollback_sample_frac:    0.15
+
+training:
+  seed:                 1337
+  val_frac:             0.10
+  max_episodes:         10000
+  eval_frequency:       500
+  checkpoint_frequency: 500
+  device:               cpu
+
+baselines:
+  random:
+    modify_probability: 0.50
+    shuffle_bbs: true
+
+  hillclimb:
+    granularity: bb
+
+  mcts:
+    mcts_levels: 6
+    mcts_budget: 40
+    mcts_scalar: 0
+    mcts_default_policy_search_depth: 1
+    attempt_beta: 1
+    max_num_modified_blocks: 100
+    with_conf: true
+    attack_strategy: new_section
+    context_free_semnops: false
+    n_alignment: 0
+    if_size_align: true
+    mcts_pause_time: 300
+    episode_timeout: 600
+    saved_sample_path: ./logs_malconv_pdqn/mcts_bypassed
+
+logging:
+  step_log:    true
+  episode_log: true
+  tensorboard: false
